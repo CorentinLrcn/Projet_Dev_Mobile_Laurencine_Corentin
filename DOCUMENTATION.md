@@ -11,7 +11,7 @@
 ### -- fonctionnalités --
 - **ajout / suppression / gestion de tâches** à l'aide des différents boutons de navigation
 - **sauvegarde des tâches dans l'application** pour garder en mémoire vos tâches lors de chaque lancement de l'application
-- **choix de thème visuel** permet à l'utilisateur de choisir entre un thème sombre et un thème clair en fonction de ses préférences (Pour l'instant vous devrez relancer l'application pour que les changements de thèmes soient pris en compte)
+- **choix de thème visuel** permet à l'utilisateur de choisir entre un thème sombre et un thème clair en fonction de ses préférences (Pour l'instant vous devrez relancer l'application après avoir changer de thème pour que les changements soient effectués)
 
 ### -- au final --
 il ne vous restera plus qu'à apprécier et à vous amusez avec l'application
