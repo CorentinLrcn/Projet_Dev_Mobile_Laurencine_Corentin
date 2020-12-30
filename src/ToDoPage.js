@@ -1,30 +1,31 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { getList } from './ActionOnStoreData'
 import ElementList from './ElementList'
 
-const ToDoPage = (props) => {
+const ToDoPage = () => {
     const [List, setList] = useState([])
     const [isEmpty, setIsEmpty] = useState(true)
+    const [fontColor, setFontcolor] = useState('black')
+    const [backColor, setBackcolor] = useState('whitesmoke')
 
-    /*const getList = async () => {
-        const item = await AsyncStorage.getItem('@todolist_key')
-        if (!item) {
-            console.log("toDoList = []")
-            return []
+    const handleChangeTheme = (theme) => {
+        if (theme == 'light') {
+            setBackcolor('whitesmoke')
+            setFontcolor('black')
+            console.log(fontColor)
+        } else {
+            setBackcolor('#111111')
+            setFontcolor('whitesmoke')
+            console.log(fontColor)
         }
-        const item_bis = JSON.parse(item)
-        console.log("toDoList = '" + item_bis + "'")
-        return item_bis
-    }*/
+    }
 
-    /*useEffect(() => {
-        //setInterval(() => {
-        setList(getList())
-        //}, 3000)
-    }, [])*/
+    const getTheme = async () => {
+        const item = await AsyncStorage.getItem('@theme_key')
+        handleChangeTheme(item)
+    }
 
     useEffect(() => {
         const fetchList = async () => {
@@ -36,18 +37,18 @@ const ToDoPage = (props) => {
             }
         }
         fetchList()
+        getTheme()
     }, [])
 
-    /*list = (toDoList.map((item) => {
-        return <ElementList item={item} />
-    }))*/
-
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: backColor }}>
             { isEmpty ? (
-                <Text>Votre liste est vide, cliquez sur le "+" pour en ajouter une</Text>
+                <Text style={{ color: fontColor }}>Votre liste est vide, cliquez sur le "+" pour en ajouter une</Text>
             ) : (
-                <Text>Votre liste n'est pas vide, cliquez sur le "+" pour en ajouter une autre</Text>
+                /*<Text>Votre liste n'est pas vide, cliquez sur le "+" pour en ajouter une autre</Text>*/
+                List.map((item) => {
+                    return <ElementList item={item} />
+                })
             )}
         </View>
     )

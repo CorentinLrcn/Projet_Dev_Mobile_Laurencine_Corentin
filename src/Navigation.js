@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-//import { createDrawerNavigator } from '@react-navigation/drawer'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import HomePage from './HomePage'
 import ToDoPage from './ToDoPage'
 import InProgressPage from './InProgressPage'
 import DonePage from './DonePage'
-//import { backButton, settingButton, addButton } from './MenuButton'
 import MenuButton from './MenuButton'
 import SettingPage from './SettingPage'
 import TaskPage from './TaskPage'
@@ -14,7 +12,6 @@ import { useAsyncStorage } from '@react-native-async-storage/async-storage'
 import { AntDesign } from '@expo/vector-icons'
 
 const Stack = createStackNavigator()
-//const Drawer = createDrawerNavigator()
 const Tabs = createBottomTabNavigator()
 
 const TabNavigation = () => {
@@ -135,6 +132,13 @@ const Navigation = () => {
             <Stack.Screen 
                 name="Tasks"
                 component={TaskPage}
+                options={({ navigation }) => ({
+                    headerLeft: () => MenuButton(navigation, 'back'),
+                    headerTitleAlign: 'center',
+                    headerStyle: {  backgroundColor: colorBack },
+                    headerTitleStyle: { color: fontColor }
+
+                })}
             />
         </Stack.Navigator>
     )

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Ionicons, AntDesign } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { back } from 'react-native/Libraries/Animated/src/Easing';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 const MenuButton = (navigation, type) => {

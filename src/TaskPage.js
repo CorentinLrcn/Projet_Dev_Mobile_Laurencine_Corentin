@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Picker } from '@react-native-picker/picker'
 import React, { useState } from 'react'
+import { useEffect } from 'react'
 import { Alert, StyleSheet, Text, View } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 
@@ -10,6 +11,27 @@ const TaskPage = (props) => {
     /*const [todoList, setTodoList] = useState([])
     const [ipList, setIPList] = useState([])
     const [doneList, setDoneList] = useState([])*/
+    const [fontColor, setFontcolor] = useState('black')
+    const [backColor, setBackcolor] = useState('whitesmoke')
+
+    const {navigation} = props
+
+    const handleChangeTheme = (theme) => {
+        if (theme == 'light') {
+            setBackcolor('whitesmoke')
+            setFontcolor('black')
+            console.log(fontColor)
+        } else {
+            setBackcolor('#111111')
+            setFontcolor('whitesmoke')
+            console.log(fontColor)
+        }
+    }
+
+    const getTheme = async () => {
+        const item = await AsyncStorage.getItem('@theme_key')
+        handleChangeTheme(item)
+    }
 
     const getList = async (key) => {
         const item = await AsyncStorage.getItem(key)
@@ -25,12 +47,12 @@ const TaskPage = (props) => {
     const addTask = async () => {
         console.log('selectedValue = ' + selectedValue)
         var tmp_list = []
-        //var tmp_list_bis = []
+        var tmp_list_bis = []
         if (selectedValue == 'ToDo') {
             //tmp_list = [...todoList]
             tmp_list = getList('@todolist_key')
             //tmp_list_bis = tmp_list.concat(taskName)
-            var tmp_list_bis = [...tmp_list, taskName]
+            tmp_list_bis = [...tmp_list, taskName]
             console.log('tmp_list = ' + tmp_list)
             //tmp_list.push(taskName)
             console.log('taskName = ' + taskName)
@@ -125,22 +147,25 @@ const TaskPage = (props) => {
         }*/
     }
 
+    useEffect(() => {
+        getTheme()
+    })
+
     return (
-        <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
-            <Text style={styles.lineSeparator}/>
-            <Text style={{ marginTop: '10%', fontSize: 15 }}>Nom de la tâche :</Text>
+        <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: backColor }}>
+            <Text style={[ styles.lineSeparator, { borderColor: fontColor } ]}/>
+            <Text style={{ marginTop: '10%', fontSize: 15, color: fontColor }}>Nom de la tâche :</Text>
             <TextInput
-                style={styles.taskNameInput}
-                placeholder={'Choisissez un nom de tâche'}
+                style={[ styles.taskNameInput, { borderColor: fontColor, backgroundColor: backColor, color: fontColor, textDecorationColor: fontColor } ]}
                 onChangeText={text => setTaskName(text)}
                 value={taskName}
             />
-            <Text style={styles.lineSeparator}/>
-            <Text style={{ marginTop: '10%', fontSize: 15 }}>Choix de la liste :</Text>
-            <View style={styles.listPickerContainer}>
+            <Text style={[ styles.lineSeparator, { borderColor: fontColor } ]}/>
+            <Text style={{ marginTop: '10%', fontSize: 15, color: fontColor }}>Choix de la liste :</Text>
+            <View style={[ styles.listPickerContainer, {borderColor: fontColor, backgroundColor: backColor} ]}>
                 <Picker
                     selectedValue={selectedValue}
-                    style={{ width: 250, fontSize: 15, height: 25 }}
+                    style={{ width: 250, fontSize: 15, height: 25, color: fontColor }}
                     onValueChange={(itemValue) => setSelectedValue(itemValue)}
                 >
                     <Picker.Item label="To Do" value="ToDo" />
@@ -148,7 +173,7 @@ const TaskPage = (props) => {
                     <Picker.Item label="Done" value="Done" />
                 </Picker>
             </View>
-            <Text style={styles.lineSeparator}/>
+            <Text style={[ styles.lineSeparator, { borderColor: fontColor } ]}/>
             { props.route.params.isNew ? (
                 <>
                     <TouchableOpacity
@@ -169,7 +194,7 @@ const TaskPage = (props) => {
                     >
                         <Text style={{ fontSize: 15, color: 'whitesmoke'}}>Modifier</Text>
                     </TouchableOpacity>
-                    
+
                     <TouchableOpacity
                         style={{ marginTop: '10%', backgroundColor: 'red', borderWidth: 1, borderRadius: 5, elevation: 5, paddingHorizontal: '20%', paddingVertical: '2.5%'}}
                         onPress={() => Alert.alert('Souhaitez-vous supprimer ?')}
@@ -185,29 +210,24 @@ const TaskPage = (props) => {
 const styles = StyleSheet.create({
     listPickerContainer: {
         alignItems: 'center',
-        borderColor: 'black',
         borderWidth: 1,
         borderRadius: 5,
-        backgroundColor: 'whitesmoke',
         elevation: 5,
         height: 30,
         marginTop: '5%'
     },
     taskNameInput: {
         width: 250,
-        borderColor: 'black',
         borderWidth: 1,
         borderRadius: 5,
         fontSize: 15,
         elevation: 5,
-        backgroundColor: 'whitesmoke',
         height: 30,
         marginTop: '5%',
         textAlign: 'center'
     },
     lineSeparator: {
         marginTop: '10%',
-        borderColor: 'black',
         borderWidth: 1,
         width: '70%',
         height: 0
